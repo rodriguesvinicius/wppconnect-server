@@ -1,30 +1,33 @@
 import { ServerOptions } from './types/ServerOptions';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 export default {
-  secretKey: 'THISISMYSECURETOKEN',
-  host: 'http://localhost',
-  port: '21465',
-  deviceName: 'WppConnect',
+  secretKey: process.env.SECRET_KEY,
+  host: 'http://0.0.0.0',
+  port: process.env.PORT || '21465',
+  deviceName: 'Tonocontrole-chat',
   poweredBy: 'WPPConnect-Server',
   startAllSession: true,
   tokenStoreType: 'file',
   maxListeners: 15,
   customUserDataDir: './userDataDir/',
   webhook: {
-    url: null,
-    autoDownload: true,
+    url: process.env.WEB_HOOK,
+    autoDownload: true, // Vai baixar imagens e anexos automaticamente
     uploadS3: false,
     readMessage: true,
     allUnreadOnStart: false,
-    listenAcks: true,
-    onPresenceChanged: true,
-    onParticipantsChanged: true,
-    onReactionMessage: true,
-    onPollResponse: true,
-    onRevokedMessage: true,
-    onLabelUpdated: true,
+    listenAcks: false,
+    onPresenceChanged: false,
+    onParticipantsChanged: false,
+    onReactionMessage: false,
+    onPollResponse: false,
+    onRevokedMessage: false,
+    onLabelUpdated: false,
     onSelfMessage: false,
-    ignore: ['status@broadcast'],
+    ignore: ['status@broadcast', 'server@c.us', 'newsletter@broadcast'],
   },
   websocket: {
     autoDownload: false,
@@ -47,7 +50,6 @@ export default {
     browserArgs: [
       '--disable-web-security',
       '--no-sandbox',
-      '--disable-web-security',
       '--aggressive-cache-discard',
       '--disable-cache',
       '--disable-application-cache',
@@ -69,15 +71,6 @@ export default {
       '--ignore-ssl-errors',
       '--ignore-certificate-errors-spki-list',
     ],
-    /**
-     * Example of configuring the linkPreview generator
-     * If you set this to 'null', it will use global servers; however, you have the option to define your own server
-     * Clone the repository https://github.com/wppconnect-team/wa-js-api-server and host it on your server with ssl
-     *
-     * Configure the attribute as follows:
-     * linkPreviewApiServers: [ 'https://www.yourserver.com/wa-js-api-server' ]
-     */
-    linkPreviewApiServers: null,
   },
   mapper: {
     enable: false,

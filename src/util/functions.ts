@@ -13,6 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
 import {
   CreateBucketCommand,
   PutObjectCommand,
@@ -141,7 +146,11 @@ export async function callWebHook(
       if (req.serverOptions.mapper.enable)
         data = await convert(req.serverOptions.mapper.prefix, data);
       api
-        .post(webhook, data)
+        .post(webhook, data, {
+          headers: {
+            'x-api-key': process.env.API_KEY,
+          },
+        })
         .then(() => {
           try {
             const events = ['unreadmessages', 'onmessage'];
